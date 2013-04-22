@@ -1,0 +1,14 @@
+{
+	"copyFiles": 
+	[
+		{
+			"name" : "MetapsPlugin.java", 
+			"srcPath" : "./src",
+			"packageName" : "com.tealeaf.plugin.plugins" 
+		}
+	],
+	"jars":
+	[
+		"./libs/metaps_sdk_android_ver2_1_1.jar"
+	]
+}
