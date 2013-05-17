@@ -7,6 +7,11 @@
 			"packageName" : "com.tealeaf.plugin.plugins" 
 		}
 	],
+	"injectionXML": 
+	{
+		"name" : "MetapsPluginManifest.xml",
+		"srcPath" : "./src"
+	},
 	"jars":
 	[
 		"./libs/metaps_sdk_android_ver2_1_1.jar"

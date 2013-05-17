@@ -5,10 +5,4 @@
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 <!--END_PLUGINS_MANIFEST-->
 <!--START_PLUGINS_APPLICATION-->
-<activity android:name="net.metaps.sdk.WallActivity"
-    android:screenOrientation="portrait"
-    android:theme="@android:style/Theme.NoTitleBar"/>
-<activity android:name="net.metaps.sdk.StatusActivity"
-    android:screenOrientation="portrait"
-    android:theme="@android:style/Theme.NoTitleBar"/>
 <!--END_PLUGINS_APPLICATION-->

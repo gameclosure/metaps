@@ -23,117 +23,63 @@ import android.content.pm.PackageManager.NameNotFoundException;
 public class MetapsPlugin implements IPlugin {
 	private Activity mActivity;
 	private boolean mConsumeBackPressed;
-	private boolean bInitialized = false;
 
-	private class MetapsEvent extends Event {
-		public int points = 0;
-
-		public MetapsEvent(int points) {
-			super("MetapsPoints");
-			this.points = points;
-		}
-	}
-
-	private class MetapsReceiver implements Receiver {
-		public boolean retrieve(int points, Offer offer) {
-			EventQueue.pushEvent(new MetapsEvent(points));
-			return true;
-		}
-
-		public boolean finalizeOnError(Offer offer) {
-			return true;
-		}
-	}
+	private String userID = "";
+	private String appID = "";
+	private String appKey = "";
 
 	public MetapsPlugin() {}
 	public void onCreateApplication(Context applicationContext) {}
 
 	public void onCreate(Activity activity, Bundle savedInstanceState) {
 		mActivity = activity;
-	}
 
-	public void onResume() {
-		if (!bInitialized) {
-			bInitialized = true;
+		try {
+			String readLine;
+			String manifestString = "";
+			InputStream is = mActivity.getAssets().open("resources/manifest.json");
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-			String userID = "";
-			String appID = "";
-			String appKey = "";
-
-			try {
-				String readLine;
-				String manifestString = "";
-				InputStream is = mActivity.getAssets().open("resources/manifest.json");
-				BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-				while ((readLine = br.readLine()) != null) {
-					manifestString += readLine;
-				}
-				br.close();
-
-				JSONObject manifest = new JSONObject(manifestString);
-				JSONObject android = manifest.getJSONObject("android");
-				JSONObject metaps = android.getJSONObject("metaps");
-				userID = metaps.getString("userID");
-				appID = metaps.getString("appID");
-				appKey = metaps.getString("appKey");
-			} catch (Exception e) {
-				Log.d("metaps", "Unable to read userID, appID, and appKey from manifest");
+			while ((readLine = br.readLine()) != null) {
+				manifestString += readLine;
 			}
+			br.close();
 
-			try {
-				Receiver receiver = new MetapsReceiver();
-				Factory.initialize(
-					mActivity,
-					receiver,
-					userID,
-					appID,
-					appKey,
-					net.metaps.sdk.Const.SDK_MODE_TEST
-				);
-			} catch(Exception e) {
-				// Exception Handling Note
-				// Factory.initialize can throw an exception
-				// If an exception is thrown, please use retry logic
-				// The following exception classes can be thrown
-				// [InvalidSettingException] : Settings are incorrect
-				// [ServerConnectionException] : Retry logic
-				// [DeviceInfoException] : Using an unsupported device
-			}
+			JSONObject manifest = new JSONObject(manifestString);
+			JSONObject android = manifest.getJSONObject("android");
+			JSONObject metaps = android.getJSONObject("metaps");
+			userID = metaps.getString("userID");
+			appID = metaps.getString("appID");
+			appKey = metaps.getString("appKey");
+
+			Log.d("~~~ metaps", "Successfully read manifest, keys are:");
+			Log.d("~~~ metaps", userID);
+			Log.d("~~~ metaps", appID);
+			Log.d("~~~ metaps", appKey);
+		} catch (Exception e) {
+			Log.d("~~~ metaps", "Unable to read userID, appID, and appKey from manifest.");
 		}
-	}
-
-	public void showOfferwall() {
-		String playerID = Device.getDeviceID(mActivity, TeaLeaf.get().getSettings());
-		String scenario = "";
 
 		try {
-			Factory.launchOfferWall(mActivity, playerID, scenario);
-		} catch(Exception e) {}
-	}
-
-	public void showFeaturedApp() {
-		String playerID = Device.getDeviceID(mActivity, TeaLeaf.get().getSettings());
-		String scenario = "";
-
-		try {
-			FeaturedAppDialog.prepare(playerID, scenario);
-			FeaturedAppDialog.show(mActivity, null);
+			Factory.sendAction(mActivity, userID, appID, appKey, net.metaps.sdk.Const.SDK_MODE_PRODUCTION);
+			Log.d("~~~ metaps", "Successfully called sendAction.");
+		} catch(InvalidSettingException e) {
+			Log.d("~~~ metaps", "Failed calling sendAction.");
+			Log.d("~~~ metaps", "InvalidSettingException!");
+			Log.d("~~~ metaps", e.getMessage());
 		} catch(Exception e) {
+			Log.d("~~~ metaps", "Failed calling sendAction.");
 			// Exception Handling Note
-			// FeaturedAppDialog.prepare / FeaturedAppDialog.show
-			// can throw an exception
+			// Factory.sendAction can throw an exception
+			// If an exception is thrown, please use retry logic
 			// The following exception classes can be thrown
-			// [UninitializedException]： Initialization not performed
+			//    [InvalidSettingException] : Settings are incorrect
+			//    [ServerConnectionException] : Retry logic
+			//    [DeviceInfoException] : Using a unsupported device
 		}
 	}
 
-	public void checkOffers() {
-		try {
-			Factory.runInstallReport();
-		} catch(Exception e) {}
-	}
-
+	public void onResume() {}
 	public void onStart() {}
 	public void onPause() {}
 	public void onStop() {}
