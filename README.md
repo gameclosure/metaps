@@ -1,6 +1,38 @@
-metaps
-======
+# Game Closure DevKit Plugin: Metaps
 
-Metaps android plugin
+This plugin adds advertising support from the [Metaps service](http://www.metaps.com) for Android.
 
-To use this plugin, add the relative path to this plugin folder to your plugin/config.json in native-android.
+## Usage
+
+Install the addon with `basil install metaps`.
+
+Include it in the `manifest.json` file under the "addons" section for your game:
+
+~~~
+"addons": [
+	"metaps"
+],
+~~~
+
+Under the Android section, you can configure the Metaps plugin:
+
+~~~
+	"android": {
+		"versionCode": 1,
+		"icons": {
+			"36": "resources/icons/android36.png",
+			"48": "resources/icons/android48.png",
+			"72": "resources/icons/android72.png",
+			"96": "resources/icons/android96.png"
+		},
+		"metaps": {
+			"userID": "",
+			"appID": "",
+			"appKey": ""
+		}
+	},
+~~~
+
+Note that the key names are case-sensitive.
+
+You can test for successful integration on the [Metaps website](http://www.metaps.com).

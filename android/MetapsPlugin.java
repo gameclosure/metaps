@@ -69,6 +69,7 @@ public class MetapsPlugin implements IPlugin {
 			Log.d("~~~ metaps", e.getMessage());
 		} catch(Exception e) {
 			Log.d("~~~ metaps", "Failed calling sendAction.");
+			Log.d("~~~ metaps", e.getMessage());
 			// Exception Handling Note
 			// Factory.sendAction can throw an exception
 			// If an exception is thrown, please use retry logic

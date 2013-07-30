@@ -1,0 +1,11 @@
+{
+	"copyFiles": [
+		"MetapsPlugin.java"
+	],
+	"libraries": [
+	],
+	"jars": [
+		"./metaps_sdk_android_ver2_1_1.jar"
+	],
+	"injectionXML": "manifest.xml"
+}
