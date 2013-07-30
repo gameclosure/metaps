@@ -26,9 +26,9 @@ Under the Android section, you can configure the Metaps plugin:
 			"96": "resources/icons/android96.png"
 		},
 		"metaps": {
-			"userID": "",
-			"appID": "",
-			"appKey": ""
+			"userID": "IZEBWMZQHZ0101",
+			"appID": "BXMTHFAVAA0101",
+			"appKey": "y17yllge9u123te"
 		}
 	},
 ~~~
