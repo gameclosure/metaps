@@ -65,9 +65,7 @@ public class MetapsPlugin implements IPlugin {
 
 				try {
 					long a = System.currentTimeMillis();
-					logger.log("JARED FACTORY");
 					Factory.sendAction(mActivity, userID, appID, appKey, net.metaps.sdk.Const.SDK_MODE_PRODUCTION);
-					logger.log("JARED FACTORY ", + (System.currentTimeMillis()-a));
 					logger.log("~~~ metaps", "Successfully called sendAction.");
 				} catch(InvalidSettingException e) {
 					logger.log("~~~ metaps", "Failed calling sendAction.");
